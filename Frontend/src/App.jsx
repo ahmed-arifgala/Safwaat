@@ -1,15 +1,14 @@
-import { useState } from 'react'
-
+import viteLogo from '/vite.svg'
+import routes from './router/routes'
 import './App.css'
+import {
+  RouterProvider,
+} from "react-router-dom";
 
 function App() {
-  // const [count, setCount] = useState(0)
-
   return (
     <>
-      <div className='border-2 w-[90%] mx-auto my-20'>
-        <p className='text-3xl'>SAFWAAT TEMPLATE</p>
-      </div>
+      <RouterProvider router={routes} />
     </>
   )
 }
