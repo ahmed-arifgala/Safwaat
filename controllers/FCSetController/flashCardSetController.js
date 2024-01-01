@@ -25,7 +25,7 @@ const fCSGetController = async (req, res) => {
     if (fCSData) {
       res.status(200).json(fCSData);
     } else {
-      res.status(204).json("No Record Found");
+      res.status(404).json({ message: "No Record Found" });
     }
   } catch (error) {
     console.log(`Error occured at fCSGetController: ${error}`);
@@ -35,14 +35,14 @@ const fCSGetController = async (req, res) => {
 const getSingleFlashCardSet = async (req, res) => {
   try {
     const fCSData = await fCModel.findOne(
-      { _id: req.params.id },
+      { flashCardSetId: req.params.id },
       { flashCards: 1, _id: 0 }
     );
 
     if (fCSData) {
       res.status(200).json(fCSData);
     } else {
-      res.status(204).json("No Record Found");
+      res.status(404).json({ message: "No Record Found" });
     }
   } catch (error) {
     console.log(`Error occured at getSingleFlashCardSet: ${error}`);

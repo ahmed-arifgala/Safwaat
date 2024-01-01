@@ -19,6 +19,7 @@ const FlashCardSetSchema = mongoose.Schema(
       required: true,
     },
     flashCards: Array,
+    flashCardSetId: Number,
   },
   {
     collection: "FlashCardSet",
