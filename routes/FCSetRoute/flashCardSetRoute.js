@@ -5,7 +5,7 @@ const {
   getSingleFlashCardSet,
 } = require("../../controllers/FCSetController/flashCardSetController");
 
-flashCardSetRouter.post("/CreateSet", fCSPostController);
+flashCardSetRouter.post("/SetCreation", fCSPostController);
 flashCardSetRouter.get("/", fCSGetController);
 flashCardSetRouter.get("/:id", getSingleFlashCardSet);
 
