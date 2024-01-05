@@ -43,8 +43,8 @@ app.use(
 app.use(morgan("tiny"));
 
 // ROUTES
-app.use("/", signupRouter);
-app.use("/", loginRouter);
+app.use("/api/signup", signupRouter);
+app.use("/api/login", loginRouter);
 
 // CREATING SERVER
 server = http.createServer(app);

@@ -20,7 +20,7 @@ const signupController = async (req, res) => {
 
     const hashedPassword = bcrypt.hashSync(password, salt);
 
-    await userModel.collection.insertOne({
+    await userModel.create({
       username,
       password: hashedPassword,
       firstName,
@@ -28,9 +28,12 @@ const signupController = async (req, res) => {
       email,
       gender,
       dateOfBirth,
+      isUpdated: false,
+      totalXp: 0,
+      streak: 0,
     });
 
-    const createdUser = (await userModel.find({ username: username }))[0];
+    const createdUser = await userModel.findOne({ username: username });
     if (createdUser) {
       jwt.sign(
         { userId: createdUser._id, username: createdUser.username },

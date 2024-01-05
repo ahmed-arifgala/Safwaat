@@ -2,12 +2,10 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const { userModel } = require("../models/userModel");
 
-const jwtSecret = process.env.JWT_SECRET;
-
 const loginController = async (req, res) => {
   try {
+    const jwtSecret = process.env.JWT_SECRET;
     const { username, password } = req.body;
-
     const foundUser = await userModel
       .findOne({ username: username })
       .then((user) => user);
@@ -20,14 +18,21 @@ const loginController = async (req, res) => {
           jwtSecret,
           {},
           (err, token) => {
-            if (err) throw err;
-            res
-              .cookie("token", token, { secure: true, sameSite: "none" })
-              .json({
-                id: foundUser._id,
-              });
+            if (err) {
+              console.log(console.log("Error in jwt signing at login", err));
+            } else {
+              res
+                .cookie("token", token, { secure: true, sameSite: "none" })
+                .status(200)
+                .json({
+                  id: foundUser?._id,
+                  username: foundUser?.username,
+                });
+            }
           }
         );
+      } else {
+        res.status(401).json("Unauthorized User");
       }
     } else {
       console.log("User not found at register controller");

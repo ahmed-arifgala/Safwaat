@@ -8,9 +8,11 @@ const userSchema = new mongoose.Schema(
     email: { type: String, unique: true },
     gender: String,
     dateOfBirth: String,
+    isUpdated: Boolean,
+    totalXp: Number,
+    streak: Number,
   },
-  { collection: "User" },
-  { timestamps: true }
+  { timestamps: true, collection: "User" }
 );
 
 const userModel = mongoose.model("User", userSchema);

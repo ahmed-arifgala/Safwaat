@@ -56,7 +56,7 @@ const SignDialog = () => {
       gender: sign.gender,
       dateOfBirth: sign.dateOfBirth,
     };
-    axios.post("http://localhost:8000/signup", userData).then((response) => {
+    axios.post("http://localhost:8000/api/signup", userData).then((response) => {
       console.log(response.status);
     });
     console.log("data sent",userData);

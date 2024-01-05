@@ -41,7 +41,7 @@ const LoginDialog = () => {
       username: username,
       password: password
     };
-    axios.post("http://localhost:8000/login", userData).then((response) => {
+    axios.post("http://localhost:8000/api/login", userData).then((response) => {
       console.log(response.status);
     });
     console.log("data sent",userData);
