@@ -14,8 +14,8 @@ const jwtsecret = process.env.JWT_SECRET;
 require("./config/db");
 
 // REQUIRING ROUTES
-const { signupRouter } = require("./api/routes/signupRoute");
-const { loginRouter } = require("./api/routes/loginRoute");
+const { signupRouter } = require("./api/routes/LoginSignupRoutes/signupRoute");
+const { loginRouter } = require("./api/routes/LoginSignupRoutes/loginRoute");
 
 // CREATING APP
 const app = express();
