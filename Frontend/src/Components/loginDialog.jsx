@@ -12,14 +12,16 @@ import { jwtDecode } from "jwt-decode";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { GoogleLogin } from '@react-oauth/google';
+import { useNavigate } from 'react-router-dom';
 
 const LoginDialog = () => {
   const username = useSelector((state) => state.login.username);
   const password = useSelector((state) => state.login.password);
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const notify = () => {
-    toast.success("Success Notification !", {
-      position: toast.POSITION.BOTTOM_LEFT
+  const notify = (msg) => {
+    toast.success(msg, {
+      position: toast.POSITION.BOTTOM_CENTER
     });
   };
 
@@ -57,7 +59,7 @@ const LoginDialog = () => {
 
   return (
     <>
-      <div className="dialog mx-[8vw] md:mx-[5vw] h-[79vh] lg:w-[35vw]">
+      <div id='main' className="dialog mx-[8vw] md:mx-[5vw] h-[79vh] lg:w-[35vw]">
         <h1 className='head text-[35px] text-center my-[3vh]'>LOGIN</h1>
         <div className="input-section mx-[5vw]">
           <InputWL
@@ -79,14 +81,15 @@ const LoginDialog = () => {
           <div className="flex flex-grow justify-between">
             <div className="rem">
               <input type="checkbox" name="rem-me" id="remember" className='accent-[#106c6f]' />
-              <label htmlFor="remember" className='mx-[0.2rem]'>Remember me</label>
+              <label htmlFor="remember" className='h-[20px] pb-[5px] mx-[0.2rem] text-sm inline-block align-middle'>Remember me</label>
             </div>
-            <a className="bg-transparent no-underline text-[#106c6f] font-extrabold hover:no-underline hover:text-white" href="">Forget Password</a>
+            <p className='text-sm mt-[3px]'>Don't have an account?
+            <a className="bg-transparent no-underline text-[#106c6f] font-extrabold hover:no-underline hover:text-white" href=""><Link to='/signup'>Create account</Link></a>
+            </p>
           </div>
         </div>
         <div className="button-section mx-[5vw] my-[5vw] flex flex-col items-center">
-          <Button className='fillButton' onClick={notify}> Login</Button>
-          <ToastContainer/>
+          <Button className='fillButton' onClick={()=>{notify("Login as Guest"); navigate('/challenges');}}>Login</Button>
           <div className='flex'>
             <hr className='w-[4vw] m-5 inline' />
             <span className='my-2'>OR</span>
@@ -95,9 +98,14 @@ const LoginDialog = () => {
           <GoogleLogin
           onSuccess={credentialResponse => {
             handleCallbackResponse(credentialResponse);
+            toast.success("Login Success !", {
+              position: toast.POSITION.BOTTOM_CENTER
+            });
           }}
           onError={() => {
-            console.log('Login Failed');
+            toast.error("Login Failed !", {
+              position: toast.POSITION.TOP_CENTER
+            });
           }}
           theme='filled_blue'
         />
