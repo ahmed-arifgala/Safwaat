@@ -64,6 +64,20 @@ const LoginDialog = () => {
     console.log(`Encoded JWT ID token: ${response}`);
     let obj = jwtDecode(response.credential);
     console.log(obj);
+    let userData = {
+      email: obj.email,
+      firstName : obj.family_name,
+      lastName: obj.given_name
+    }
+    axios.post("http://localhost:8000/api/login/google", userData,{withCredentials:true}).then((response) => {
+    console.log(response);
+    if(response.status==200){
+      notifysucc(response.data.email);
+    }else{
+      notifyerror("Invalid Credentials");
+    }
+    }).catch((error)=>notifyerror("Invalid Credentials"));
+    console.log("data sent",userData);
   }
 
 
@@ -108,13 +122,10 @@ const LoginDialog = () => {
           <GoogleLogin
           onSuccess={credentialResponse => {
             handleCallbackResponse(credentialResponse);
-            toast.success("Login Success !", {
-              position: toast.POSITION.BOTTOM_CENTER
-            });
           }}
           onError={() => {
             toast.error("Login Failed !", {
-              position: toast.POSITION.TOP_CENTER
+              position: toast.POSITION.TOP_RIGHT
             });
           }}
           theme='filled_blue'

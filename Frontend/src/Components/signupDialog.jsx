@@ -10,7 +10,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
 import {toast } from 'react-toastify';
-
+import { jwtDecode } from "jwt-decode";
 
 const SignDialog = () => {
   const dispatch = useDispatch()
@@ -60,6 +60,32 @@ const SignDialog = () => {
     }
   };
 
+
+  function handleCallbackResponse(response){
+      console.log(`Encoded JWT ID token: ${response}`);
+      let obj = jwtDecode(response.credential);
+      console.log(obj);
+      let userData = {
+        email: obj.email,
+        firstName : obj.family_name,
+        lastName: obj.given_name
+      }
+      axios.post("http://localhost:8000/api/signup/google", userData,{withCredentials:true}).then((response) => {
+      console.log(response);
+      if(response.status==201){
+        notifysucc(response.data.firstName);
+      }else if(response.status==409){
+        notifyerror(response.data.message);
+      }
+      else{
+        notifyerror("Account Creation Failed");
+      }
+    }).catch((error)=>notifyerror(error.response.data.message));
+    console.log("data sent",userData);
+  }
+
+  
+
   const handleSubmit = (e)=>{
     e.preventDefault();
     const userData = {
@@ -71,7 +97,7 @@ const SignDialog = () => {
       gender: sign.gender,
       dateOfBirth: sign.dateOfBirth,
     };
-    axios.post("http://localhost:8000/api/signup", userData,{withCredentials:true}).then((response) => {
+    axios.post("http://localhost:8000/api/signup/google", userData,{withCredentials:true}).then((response) => {
       console.log(response);
       if(response.status==201){
         notifysucc(response.data.username);
@@ -112,7 +138,14 @@ const SignDialog = () => {
             
             <div className="button-section mx-[5vw] my-[2vh] flex flex-row items-center justify-between px-10">
                 <Button className='fillButton' onClick={handleSubmit}>Create Account</Button>
-                <GoogleLogin width='300' useOneTap/>
+                <GoogleLogin onSuccess={credentialResponse => {
+                  handleCallbackResponse(credentialResponse);
+                }}
+                onError={() => {
+                  toast.error("Login Failed !", {
+                    position: toast.POSITION.TOP_RIGHT
+                  });
+                }} width='300' useOneTap/>
                 {/* <Button className='googlefill' onClick={()=><GoogleLogin/>}><img src={google} alt="" className='inline scale-50'/>Sign-in With Google</Button> */}
             </div>
             <p className='text-center'>Already have an account? <Link to='/' className='text-[#33babe]'>Log In</Link></p>
