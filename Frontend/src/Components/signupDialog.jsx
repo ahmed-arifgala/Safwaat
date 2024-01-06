@@ -4,14 +4,17 @@ import google from '../assets/google.png'
 import InputWL from './input.jsx';
 import Button from './button';
 import Checkbox from './checkbox';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { setdetails,setUsername,setDateOfBirth,setGender,setEmail,setPassword,setRememberMe,setFirstName,setLastName,setAgreeToTerms } from '../Features/signSlice';
 import { useSelector,useDispatch } from 'react-redux';
 import axios from 'axios';
+import { GoogleLogin } from '@react-oauth/google';
+
 
 const SignDialog = () => {
   const dispatch = useDispatch()
   const sign = useSelector(state=>state.sign)
+  const navigate = useNavigate()
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -89,7 +92,8 @@ const SignDialog = () => {
             
             <div className="button-section mx-[5vw] my-[2vh] flex flex-row items-center justify-between px-10">
                 <Button className='fillButton' onClick={handleSubmit}>Create Account</Button>
-                <Button className='googlefill'><img src={google} alt="" className='inline scale-50'/>Sign-in With Google</Button>
+                <GoogleLogin width='300' useOneTap/>
+                {/* <Button className='googlefill' onClick={()=><GoogleLogin/>}><img src={google} alt="" className='inline scale-50'/>Sign-in With Google</Button> */}
             </div>
             <p className='text-center'>Already have an account? <Link to='/' className='text-[#33babe]'>Log In</Link></p>
         </div>
