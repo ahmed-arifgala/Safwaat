@@ -8,7 +8,7 @@ const googleSignupController = async (req, res) => {
     const { firstName, lastName, email } = req.body;
 
     await userModel.create({
-      username: "",
+      username: null,
       password: "",
       firstName,
       lastName,
@@ -36,7 +36,7 @@ const googleSignupController = async (req, res) => {
         }
       });
     } else {
-      console.log("User not found at register controller");
+      console.log("User not found at google register controller");
       res.status(400).json("User not found");
     }
   } catch (error) {
