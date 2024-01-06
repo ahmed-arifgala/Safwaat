@@ -9,12 +9,24 @@ import { setdetails,setUsername,setDateOfBirth,setGender,setEmail,setPassword,se
 import { useSelector,useDispatch } from 'react-redux';
 import axios from 'axios';
 import { GoogleLogin } from '@react-oauth/google';
+import {toast } from 'react-toastify';
 
 
 const SignDialog = () => {
   const dispatch = useDispatch()
   const sign = useSelector(state=>state.sign)
   const navigate = useNavigate()
+
+  const notifysucc = (msg) => {
+    toast.success(`Successful Account Creation as ${msg}`, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
+  const notifyerror = (msg) => {
+    toast.error(msg, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -59,9 +71,17 @@ const SignDialog = () => {
       gender: sign.gender,
       dateOfBirth: sign.dateOfBirth,
     };
-    axios.post("http://localhost:8000/api/signup", userData).then((response) => {
-      console.log(response.status);
-    });
+    axios.post("http://localhost:8000/api/signup", userData,{withCredentials:true}).then((response) => {
+      console.log(response);
+      if(response.status==201){
+        notifysucc(response.data.username);
+      }else if(response.status==409){
+        notifyerror(response.data.message);
+      }
+      else{
+        notifyerror("Account Creation Failed");
+      }
+    }).catch((error)=>notifyerror(error.response.data.message));
     console.log("data sent",userData);
   };
 

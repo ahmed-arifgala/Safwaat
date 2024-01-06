@@ -4,10 +4,12 @@ import './App.css'
 import {
   RouterProvider,
 } from "react-router-dom";
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <>
+      <ToastContainer containerId='main'/>
       <RouterProvider router={routes} />
     </>
   )

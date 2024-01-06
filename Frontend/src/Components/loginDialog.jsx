@@ -19,9 +19,14 @@ const LoginDialog = () => {
   const password = useSelector((state) => state.login.password);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const notify = (msg) => {
-    toast.success(msg, {
-      position: toast.POSITION.BOTTOM_CENTER
+  const notifysucc = (msg) => {
+    toast.success(`Successful Login as ${msg}`, {
+      position: toast.POSITION.TOP_RIGHT
+    });
+  };
+  const notifyerror = (msg) => {
+    toast.error(msg, {
+      position: toast.POSITION.TOP_RIGHT
     });
   };
 
@@ -43,9 +48,14 @@ const LoginDialog = () => {
       username: username,
       password: password
     };
-    axios.post("http://localhost:8000/api/login", userData).then((response) => {
-      console.log(response.status);
-    });
+    axios.post("http://localhost:8000/api/login", userData,{ withCredentials: true }).then((response) => {
+      console.log(response);
+      if(response.status==200){
+        notifysucc(response.data.username);
+      }else{
+        notifyerror("Invalid Credentials");
+      }
+    }).catch((error)=>notifyerror("Invalid Credentials"));
     console.log("data sent",userData);
   };
 
@@ -83,13 +93,13 @@ const LoginDialog = () => {
               <input type="checkbox" name="rem-me" id="remember" className='accent-[#106c6f]' />
               <label htmlFor="remember" className='h-[20px] pb-[5px] mx-[0.2rem] text-sm inline-block align-middle'>Remember me</label>
             </div>
-            <p className='text-sm mt-[3px]'>Don't have an account?
-            <a className="bg-transparent no-underline text-[#106c6f] font-extrabold hover:no-underline hover:text-white" href=""><Link to='/signup'>Create account</Link></a>
+            <p className='text-sm mt-[3px]'>Don't have an account?&nbsp;
+            <a className="bg-transparent no-underline text-[#39dee4] font-extrabold hover:no-underline hover:text-white" href=""><Link to='/signup'>Create account</Link></a>
             </p>
           </div>
         </div>
         <div className="button-section mx-[5vw] my-[5vw] flex flex-col items-center">
-          <Button className='fillButton' onClick={()=>{notify("Login as Guest"); navigate('/challenges');}}>Login</Button>
+          <Button className='fillButton' onClick={(e)=>handleSubmit(e)}>Login</Button>
           <div className='flex'>
             <hr className='w-[4vw] m-5 inline' />
             <span className='my-2'>OR</span>

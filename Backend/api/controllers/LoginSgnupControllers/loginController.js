@@ -36,7 +36,7 @@ const loginController = async (req, res) => {
       }
     } else {
       console.log("User not found at register controller");
-      res.status(400).json("User not found");
+      res.status(401).json("User not found");
     }
   } catch (error) {
     console.log(`Error encountered at register route: ${error}`);
