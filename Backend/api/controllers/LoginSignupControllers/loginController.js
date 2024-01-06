@@ -39,7 +39,8 @@ const loginController = async (req, res) => {
       res.status(401).json("User not found");
     }
   } catch (error) {
-    console.log(`Error encountered at register route: ${error}`);
+    console.log(`Error encountered at login route: ${error}`);
+    res.status(409).json({ message: "Invalid Credentials" });
   }
 };
 

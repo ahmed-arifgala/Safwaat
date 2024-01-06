@@ -1,13 +1,14 @@
 const {
   googleLoginController,
-} = require("../../controllers/LoginSgnupControllers/googleLoginController");
+} = require("../../controllers/LoginSignupControllers/googleControllers/googleLoginController");
 const {
   loginController,
-} = require("../../controllers/LoginSgnupControllers/loginController");
+} = require("../../controllers/LoginSignupControllers/loginController");
 
 const loginRouter = require("express").Router();
 
 // SIGNUP ROUTE
+
 loginRouter.post("/", loginController);
 loginRouter.post("/google", googleLoginController);
 
