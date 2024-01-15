@@ -1,0 +1,13 @@
+{
+    "Monthly": [
+      { "id": "0", "label": "Daily Challenges","color":"blue" },
+      { "id": "2", "label": "Achievements","color":"orange" }
+    ],
+    "comments": [
+      { "id": "1", "text": "a comment about post 1", "postId": "1" },
+      { "id": "2", "text": "another comment about post 1", "postId": "1" }
+    ],
+    "profile": {
+      "name": "typicode"
+    }
+  }
