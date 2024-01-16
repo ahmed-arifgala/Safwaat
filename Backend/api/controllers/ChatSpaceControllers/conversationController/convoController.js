@@ -4,14 +4,32 @@ const {
 const { getLatestMsg } = require("./latestMessage/getLatestMsg");
 
 const addNewConvo = async (req, res) => {
-  const conversation = new ConversationModel({
-    members: [req.body.senderId, req.body.receiverId],
-  });
-
   try {
-    const savedConversation = await conversation.save();
-    res.status(200).json(savedConversation);
+    const userConvo = await ConversationModel.findOne({
+      members: [req.body.senderId, req.body.receiverId],
+    });
+    const userConvoRev = await ConversationModel.findOne({
+      members: [req.body.receiverId, req.body.senderId],
+    });
+    const convoDb = userConvo ? userConvo : userConvoRev ? userConvoRev : null;
+
+    if (convoDb) {
+      res.json(convoDb);
+    } else {
+      const newConvo = new ConversationModel({
+        members: [req.body.senderId, req.body.receiverId],
+      });
+      const savedConversation = await newConvo.save();
+
+      if (savedConversation) {
+        console.log("convo created");
+        res.status(200).json(savedConversation);
+      } else {
+        res.json(200).json("convo not created");
+      }
+    }
   } catch (error) {
+    console.log(`Error at convo creation: ${error}`);
     res.status(500).json({ err: error });
   }
 };
