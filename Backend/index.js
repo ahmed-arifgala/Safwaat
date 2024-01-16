@@ -1,5 +1,6 @@
 const http = require("http");
 const express = require("express");
+const nodemailer = require('nodemailer');
 const cors = require("cors");
 const morgan = require("morgan");
 const cookieParser = require("cookie-parser");
